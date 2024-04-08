@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exemplo de Utilização da NASA API</title>
+    </head>
+    <body>
+        <!-- Div onde a imagem será exibida -->
+        <div id="imagem"></div>
+
+        <script>
+        // Função para carregar a imagem astronômica do dia
+        function carregarImagem() {
+            // Chamada para a API da NASA para obter a imagem do dia . Acesse https://api.nasa.gov
+            fetch('https://api.nasa.gov/planetary/apod?api_key=SUA_CHAVE_DA_API')
+            .then(response => response.json())
+            .then(data => {
+                // Verifica se a mídia é uma imagem (pode ser uma imagem ou vídeo)
+                if (data.media_type === 'image') {
+                    // Exibindo a imagem na página
+                    var imagemDiv = document.getElementById('imagem');
+                    imagemDiv.innerHTML += '<img src="' + data.url + '" alt="' + data.title + '" style="max-width: 100%;">';
+                    imagemDiv.innerHTML += '<p>' + data.title + '</p>';
+                    imagemDiv.innerHTML += '<p>' + data.explanation + '</p>';
+                } else {
+                    console.error('A mídia de hoje não é uma imagem.');
+                }
+            })
+            .catch(error => console.error('Erro ao carregar imagem:', error));
+        }
+
+        // Chamando a função para carregar a imagem ao carregar a página
+        window.onload = carregarImagem;
+    </script>
+    </body>
+</html>
