@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exemplo de Utilização da Facebook Graph API</title>
+</head>
+<body>
+    <!-- Div onde as informações do perfil serão exibidas -->
+    <div id="perfil"></div>
+
+    <script>
+        // Função para carregar as informações do perfil
+        function carregarPerfil() {
+            // Token de acesso da API do Facebook (gerado após autenticação)
+            var accessToken = 'SEU_TOKEN_DE_ACESSO';
+
+            // Chamada para a API do Facebook para obter as informações do perfil
+            fetch('https://graph.facebook.com/me?fields=id,name,email&access_token=' + accessToken)
+            .then(response => response.json())
+            .then(data => {
+                // Exibindo as informações do perfil na página
+                var perfilDiv = document.getElementById('perfil');
+                perfilDiv.innerHTML += '<p>ID: ' + data.id + '</p>';
+                perfilDiv.innerHTML += '<p>Nome: ' + data.name + '</p>';
+                perfilDiv.innerHTML += '<p>Email: ' + data.email + '</p>';
+            })
+            .catch(error => console.error('Erro ao carregar perfil:', error));
+        }
+
+        // Chamando a função para carregar o perfil ao carregar a página
+        window.onload = carregarPerfil;
+    </script>
+</body>
+</html>
