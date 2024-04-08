@@ -1,46 +1,44 @@
 <?php
-require 'vendor_email/autoload.php';
+require 'vendor_email/autoload.php'; // Inclui o autoload do PHPMailer
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-//Load Composer's autoloader
-
+// Função para enviar boleto por e-mail
 function enviarBoleto($email)
 {
-
-
-    //Create an instance; passing `true` enables exceptions
+    // Instância do PHPMailer
     $mail = new PHPMailer(true);
-    header('Content-Type: text/html; charset=UTF-8');
+
+    // Configuração do servidor SMTP
+    $mail->IsSMTP(); // Habilita SMTP
+    $mail->SMTPDebug = 1; // Depuração: 1 = erros e mensagens, 2 = apenas mensagens
+    $mail->SMTPAuth = true; // Autenticação SMTP ativada
+    $mail->SMTPSecure = 'tls'; // Transferência segura ativada, necessário para Gmail
+    $mail->Host = "mail.gmail.com"; // Servidor de e-mail (gmail, outlook, etc.)
+    $mail->Port = 587; // Porta SMTP
+    $mail->IsHTML(true); // Define que o e-mail será em HTML
+    $mail->CharSet = 'UTF-8'; // Define o conjunto de caracteres como UTF-8
+    $mail->Username = "seu-email"; // Seu e-mail
+    $mail->Password = "senha-email"; // Sua senha de e-mail
+    $mail->SetFrom("seu-email"); // Define o e-mail remetente
+    $mail->Subject = "titulo-email"; // Assunto do e-mail
+
+    // Corpo do e-mail
     $corpo = 'conteudo-do-meu-email';
-
-    //Create an instance; passing `true` enables exceptions
-    $mail = new PHPMailer(true);
-    $mail->IsSMTP(); // enable SMTP
-    $mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
-    $mail->SMTPAuth = true; // authentication enabled
-    $mail->SMTPSecure = 'tls'; // secure transfer enabled REQUIRED for Gmail
-    $mail->Host = "mail.gmail.com"; // utilize servidor de email (gmail, outlook...)
-    $mail->Port = 587; // or 587
-    $mail->IsHTML(true);
-    $mail->CharSet = 'UTF-8';
-    $mail->Username = "seu-email";
-    $mail->Password = "senha-email";
-    $mail->SetFrom("seu-email");
-    $mail->Subject = "titulo-email";
     $mail->Body = $corpo;
-    $mail->AddAddress($email); // Email que será enviado
-    if (!$mail->Send()) {
-        return false;
-    } else {
 
-        return true;
+    $mail->AddAddress($email); // Adiciona o e-mail do destinatário
+
+    // Envia o e-mail
+    if (!$mail->Send()) {
+        return false; // Retorna falso se houver erro no envio
+    } else {
+        return true; // Retorna verdadeiro se o e-mail for enviado com sucesso
     }
 }
 
-
-//CRIE sua lógica e utilize a função para realizar mais fácilmente a chamada, podendo expandir para uma lista. 
-
+// Chamada da função enviarBoleto com um e-mail de exemplo
 enviarBoleto("email@teste.com.br");
+?>
