@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exemplo de Utilização da OpenWeatherMap API</title>
+    </head>
+    <body>
+        <!-- Div onde as informações do clima serão exibidas -->
+        <div id="clima"></div>
+
+        <script>
+        // Função para carregar as informações do clima
+        function carregarClima() {
+            // Chamada para a API do OpenWeatherMap para obter as informações do clima
+            fetch('https://api.openweathermap.org/data/2.5/weather?q=London&appid=SUA_CHAVE_DA_API&units=metric') // Substitua 'SUA_CHAVE_DA_API' pela sua chave de API do OpenWeatherMap
+            .then(response => response.json())
+            .then(data => {
+                // Exibindo as informações do clima na página
+                var climaDiv = document.getElementById('clima');
+                climaDiv.innerHTML += '<p>Cidade: ' + data.name + '</p>';
+                climaDiv.innerHTML += '<p>Temperatura: ' + data.main.temp + '°C</p>';
+                climaDiv.innerHTML += '<p>Condição: ' + data.weather[0].description + '</p>';
+            })
+            .catch(error => console.error('Erro ao carregar clima:', error));
+        }
+
+        // Chamando a função para carregar o clima ao carregar a página
+        window.onload = carregarClima;
+    </script>
+    </body>
+</html>
