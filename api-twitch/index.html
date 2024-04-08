@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exemplo de Utilização da Twitch API</title>
+</head>
+<body>
+    <!-- Div onde os melhores streams em inglês serão exibidos -->
+    <div id="streams"></div>
+
+    <script>
+        // Função para carregar os melhores streams em inglês da Twitch
+        function carregarStreams() {
+            fetch('https://api.twitch.tv/helix/streams?first=5&language=pt', {
+                headers: {
+                    'Client-ID': 'SEU_CLIENT_ID' // Substitua 'SEU_CLIENT_ID' pelo seu Client ID da Twitch API
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                var streamsDiv = document.getElementById('streams');
+                data.data.forEach(stream => {
+                    streamsDiv.innerHTML += '<p>' + stream.title + ' - ' + stream.user_name + '</p>';
+                });
+            })
+            .catch(error => console.error('Erro ao carregar streams:', error));
+        }
+
+        // Chamando a função para carregar os streams ao carregar a página
+        window.onload = carregarStreams;
+    </script>
+</body>
+</html>
