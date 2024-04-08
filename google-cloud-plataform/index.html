@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exemplo de Upload de Arquivo para o Google Cloud Storage</title>
+    <script src="https://apis.google.com/js/api.js"></script>
+</head>
+<body>
+    <h1>Upload de Arquivo para o Google Cloud Storage</h1>
+
+    <!-- Formulário para seleção de arquivo -->
+    <form id="upload-form">
+        <input type="file" id="file-input" accept="image/*" required>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        // Configuração do Google Cloud Platform
+        function iniciarClienteGCP() {
+            gapi.client.init({
+                apiKey: 'SUA_CHAVE_DE_API', // Substitua 'SUA_CHAVE_DE_API' pela sua chave de API do Google Cloud Platform
+                discoveryDocs: ['https://storage.googleapis.com/discovery/v1/apis/storage/v1/rest'],
+            });
+        }
+
+        // Manipulador de eventos para o formulário de upload de arquivo
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var file = document.getElementById('file-input').files[0];
+            if (!file) {
+                alert('Selecione um arquivo.');
+                return;
+            }
+
+            gapi.client.load('storage', 'v1', function() {
+                var request = gapi.client.storage.objects.insert({
+                    bucket: 'NOME_DO_SEU_BUCKET', // Substitua 'NOME_DO_SEU_BUCKET' pelo nome do seu bucket do Google Cloud Storage
+                    name: file.name,
+                    resource: {
+                        contentType: file.type
+                    },
+                    media: {
+                        body: file
+                    }
+                });
+
+                request.execute(function(response) {
+                    if (response.error) {
+                        console.error('Erro ao fazer upload:', response.error);
+                        alert('Erro ao fazer upload do arquivo.');
+                    } else {
+                        console.log('Upload realizado com sucesso:', response);
+                        alert('Upload do arquivo realizado com sucesso.');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Inicializa o cliente do Google Cloud Platform -->
+    <script>
+        gapi.load('client', iniciarClienteGCP);
+    </script>
+</body>
+</html>
