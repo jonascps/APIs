@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exemplo de Utilização da Instagram Graph API</title>
+</head>
+<body>
+    <!-- Div onde as informações do usuário serão exibidas -->
+    <div id="usuario"></div>
+
+    <script>
+        // Função para carregar as informações do usuário do Instagram
+        function carregarUsuario() {
+            fetch('https://graph.instagram.com/me?fields=id,username&access_token=SUA_ACCESS_TOKEN') // Substitua 'SUA_ACCESS_TOKEN' pelo seu access token da Instagram Graph API
+            .then(response => response.json())
+            .then(data => {
+                var usuarioDiv = document.getElementById('usuario');
+                usuarioDiv.innerHTML += '<p>ID: ' + data.id + '</p>';
+                usuarioDiv.innerHTML += '<p>Nome de Usuário: ' + data.username + '</p>';
+            })
+            .catch(error => console.error('Erro ao carregar usuário:', error));
+        }
+
+        // Chamando a função para carregar o usuário ao carregar a página
+        window.onload = carregarUsuario;
+    </script>
+</body>
+</html>
