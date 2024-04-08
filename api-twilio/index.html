@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exemplo de Utilização da API Twilio para Envio de SMS</title>
+</head>
+<body>
+    <h1>Envio de SMS com Twilio</h1>
+
+    <!-- Formulário para enviar SMS -->
+    <form id="sms-form">
+        <label for="numero">Número de Destino:</label>
+        <input type="text" id="numero" name="numero" required>
+        <br>
+        <label for="mensagem">Mensagem:</label>
+        <textarea id="mensagem" name="mensagem" required></textarea>
+        <br>
+        <button type="submit">Enviar SMS</button>
+    </form>
+
+    <script>
+        // Manipulador de eventos para o formulário de envio de SMS
+        document.getElementById('sms-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var numero = document.getElementById('numero').value;
+            var mensagem = document.getElementById('mensagem').value;
+
+            // Chamada para o servidor para enviar SMS usando Twilio API
+            fetch('/enviar-sms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({numero: numero, mensagem: mensagem})
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('SMS enviado com sucesso!');
+                } else {
+                    alert('Erro ao enviar SMS.');
+                }
+            })
+            .catch(error => console.error('Erro ao enviar SMS:', error));
+        });
+    </script>
+</body>
+</html>
