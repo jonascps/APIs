@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exemplo de Utilização da YouTube Data API</title>
+</head>
+<body>
+    <!-- Div onde os vídeos serão exibidos -->
+    <div id="videos"></div>
+
+    <script>
+        // Função para carregar os vídeos
+        function carregarVideos() {
+            // Chamada para a API do YouTube para obter os vídeos
+            fetch('https://www.googleapis.com/youtube/v3/search?key=SUA_CHAVE_DA_API&part=snippet&q=dogs&maxResults=5') // Substitua 'SUA_CHAVE_DA_API' pela sua chave de API do YouTube
+            .then(response => response.json())
+            .then(data => {
+                // Exibindo os vídeos na página
+                var videosDiv = document.getElementById('videos');
+                data.items.forEach(video => {
+                    videosDiv.innerHTML += '<p>' + video.snippet.title + '</p>';
+                });
+            })
+            .catch(error => console.error('Erro ao carregar vídeos:', error));
+        }
+
+        // Chamando a função para carregar os vídeos ao carregar a página
+        window.onload = carregarVideos;
+    </script>
+</body>
+</html>
