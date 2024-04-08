@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exemplo de Utilização da GitHub API</title>
+    </head>
+    <body>
+        <!-- Div onde as informações do repositório serão exibidas -->
+        <div id="repositorio"></div>
+
+        <script>
+        // Função para carregar as informações do repositório
+        function carregarRepositorio() {
+            // Nome do usuário e nome do repositório
+            var usuario = 'github';
+            var repositorio = 'gitignore'; // Substitua pelo nome do repositório desejado
+
+            // Chamada para a API do GitHub para obter as informações do repositório
+            fetch('https://api.github.com/repos/' + usuario + '/' + repositorio)
+            .then(response => response.json())
+            .then(data => {
+                // Exibindo as informações do repositório na página
+                var repositorioDiv = document.getElementById('repositorio');
+                repositorioDiv.innerHTML += '<p>Nome: ' + data.full_name + '</p>';
+                repositorioDiv.innerHTML += '<p>Descrição: ' + data.description + '</p>';
+                repositorioDiv.innerHTML += '<p>URL: <a href="' + data.html_url + '">' + data.html_url + '</a></p>';
+            })
+            .catch(error => console.error('Erro ao carregar repositório:', error));
+        }
+
+        // Chamando a função para carregar o repositório ao carregar a página
+        window.onload = carregarRepositorio;
+    </script>
+    </body>
+</html>
