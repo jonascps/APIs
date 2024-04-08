@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exemplo de Utilização da Twitter API</title>
+    </head>
+    <body>
+        <!-- Div onde os tweets serão exibidos -->
+        <div id="tweets"></div>
+
+        <script>
+        // Função para carregar os tweets
+        function carregarTweets() {
+            // Configurações da requisição
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=twitterdev&count=5", // Substitua 'twitterdev' pelo nome do usuário do Twitter desejado
+                "method": "GET",
+                "headers": {
+                    "Authorization": "Bearer SUA_CHAVE_DE_ACESSO" // Substitua 'SUA_CHAVE_DE_ACESSO' pela sua chave de acesso da API do Twitter
+                }
+            }
+
+            // Fazendo a requisição para obter os tweets
+            $.ajax(settings).done(function (response) {
+                // Exibindo os tweets na página
+                var tweetsDiv = document.getElementById('tweets');
+                for (var i = 0; i < response.length; i++) {
+                    var tweet = response[i];
+                    tweetsDiv.innerHTML += '<p>' + tweet.text + '</p>';
+                }
+            });
+        }
+
+        // Chamando a função para carregar os tweets ao carregar a página
+        window.onload = carregarTweets;
+    </script>
+
+        <!-- Incluindo a biblioteca jQuery -->
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </body>
+</html>
