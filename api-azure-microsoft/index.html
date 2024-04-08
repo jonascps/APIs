@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exemplo de Upload de Arquivo para o Microsoft Azure Blob
+            Storage</title>
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>Upload de Arquivo para o Microsoft Azure Blob Storage</h1>
+
+        <!-- Formulário para seleção de arquivo -->
+        <form id="upload-form">
+            <input type="file" id="file-input" accept="image/*" required>
+            <button type="submit">Enviar</button>
+        </form>
+
+        <script>
+        // Manipulador de eventos para o formulário de upload de arquivo
+        $('#upload-form').submit(function(event) {
+            event.preventDefault();
+
+            var file = $('#file-input')[0].files[0];
+            if (!file) {
+                alert('Selecione um arquivo.');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('file', file);
+
+            $.ajax({
+                url: 'URL_DO_SEU_ENDPOINT_DE_UPLOAD', // Substitua 'URL_DO_SEU_ENDPOINT_DE_UPLOAD' pela URL do seu endpoint de upload na Azure Blob Storage
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    console.log('Upload realizado com sucesso:', data);
+                    alert('Upload do arquivo realizado com sucesso.');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro ao fazer upload:', error);
+                    alert('Erro ao fazer upload do arquivo.');
+                }
+            });
+        });
+    </script>
+    </body>
+</html>
