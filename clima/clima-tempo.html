@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tempo em Brasília</title>
+    </head>
+    <body>
+        <h1>Tempo em Brasília</h1>
+        <div id="weather-info"></div>
+
+        <script>
+    // Chave da API do OpenWeatherMap
+    const API_KEY = 'insira-sua-chave';
+    //SITE:  https://home.openweathermap.org/api_keys
+
+    // CIDADE
+    const city = 'Brasilia';
+
+
+    // URL da API de previsão do tempo
+    const weather_api_url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+
+    // Função para obter o tempo atual em Brasília
+    async function getWeather() {
+        try {
+            const response = await fetch(weather_api_url);
+            const data = await response.json();
+            
+            // Exibir os dados do tempo na página
+            document.getElementById('weather-info').innerHTML = `
+                <p>Temperatura: ${data.main.temp}°C</p>
+                <p>Máxima: ${data.main.temp_max}</p>
+                <p>Mínimo: ${data.main.temp_min}</p>
+            `;
+            console.log(data.main);
+        } catch (error) {
+            console.error('Erro ao obter dados do tempo:', error);
+        }
+    }
+
+    // Chamar a função para obter o tempo assim que a página carregar
+    window.onload = getWeather;
+</script>
+    </body>
+</html>
