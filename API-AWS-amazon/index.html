@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exemplo de Upload de Arquivo para o Amazon S3</title>
+        <script
+            src="https://sdk.amazonaws.com/js/aws-sdk-2.1204.0.min.js"></script>
+    </head>
+    <body>
+        <h1>Upload de Arquivo para o Amazon S3</h1>
+
+        <!-- Formulário para seleção de arquivo -->
+        <form id="upload-form">
+            <input type="file" id="file-input" accept="image/*" required>
+            <button type="submit">Enviar</button>
+        </form>
+
+        <script>
+        // Configuração da AWS
+        AWS.config.update({
+            region: 'SUA_REGIAO_DA_AWS', // Substitua 'SUA_REGIAO_DA_AWS' pela região da sua conta AWS
+            credentials: new AWS.Credentials('SUA_ACCESS_KEY_ID', 'SUA_SECRET_ACCESS_KEY') // Substitua 'SUA_ACCESS_KEY_ID' e 'SUA_SECRET_ACCESS_KEY' pelas suas credenciais de acesso da AWS
+        });
+
+        // Manipulador de eventos para o formulário de upload de arquivo
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var file = document.getElementById('file-input').files[0];
+            if (!file) {
+                alert('Selecione um arquivo.');
+                return;
+            }
+
+            var s3 = new AWS.S3();
+            var params = {
+                Bucket: 'NOME_DO_SEU_BUCKET', // Substitua 'NOME_DO_SEU_BUCKET' pelo nome do seu bucket S3
+                Key: file.name,
+                Body: file
+            };
+
+            // Realiza o upload do arquivo para o Amazon S3
+            s3.upload(params, function(err, data) {
+                if (err) {
+                    console.error('Erro ao fazer upload:', err);
+                    alert('Erro ao fazer upload do arquivo.');
+                } else {
+                    console.log('Upload realizado com sucesso:', data);
+                    alert('Upload do arquivo realizado com sucesso.');
+                }
+            });
+        });
+    </script>
+    </body>
+</html>
